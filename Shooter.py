@@ -1,8 +1,4 @@
-#import pyautogui
-#pos = pyautogui.position()
-#print(f"Position de la souris: X = {pos.x}, Y = {pos.y}")
-
-import network, sys, pygame, random, xlog, time, colorsys
+import network, sys, pygame, random, xlog, time, colorsys, math
 
 pygame.init()
 
@@ -12,7 +8,10 @@ black = [0, 0, 0]
 speed = 2
 
 name = input("Choisissez votre pseudonyme :")
-arme = input("Choisissez le numéro de l'arme que vous désirez: 1-pistolet: vitesse 5, dégats 5, temps de recharge 0.5s  ;  2-sniper: vitesse 15, dégats 50, temps de recharge 3s ")
+arme = input("Choisissez le numéro de l'arme que vous désirez:"
+			 "\n1-pistolet:	vitesse 5,	dégats 5,	temps de recharge 0.5s"
+			 "\n2-sniper:	vitesse 15,	dégats 50,	temps de recharge 3s "
+			 "\n:")
 if arme=="1":
 	arme_damage = 5
 	arme_speed = 5
@@ -185,6 +184,8 @@ send_move()
 
 # Boucle principale
 while True:
+	pos = pygame.mouse.get_pos()
+	angle = math.atan2(pos[0] - me.pos[0], pos[1] - me.pos[1])
 	# Lecture des événements
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: # fenêtre fermée
@@ -206,8 +207,8 @@ while True:
 				# Créer une balle
 				bullet = Bullet( # avec ses informations :
 					new_oid(), # son identifiant
-					[me.pos[0] + me.direction[0] * 8, me.pos[1] + me.direction[1] * 8], # sa position
-					[me.direction[0] * arme_speed, me.direction[1] * arme_speed], # sa vitesse
+					[me.pos[0] + math.cos(angle) * 8, me.pos[1] + math.sin(angle) * 8], # sa position
+					[math.cos(angle) * arme_speed, math.sin(angle) * arme_speed], # sa vitesse
 					[255, 255, 255], # couleur blanche
 					arme_damage
 				)
@@ -291,3 +292,4 @@ while True:
 
 	pygame.display.flip() # mettre à jour l'écran
 	clock.tick(30) # attendre un peu
+
