@@ -11,7 +11,7 @@ name = input("Choisissez votre pseudonyme :")
 arme = input("Choisissez le numéro de l'arme que vous désirez:"
 			 "\n1-pistolet:	vitesse 5,	dégats 5,	temps de recharge 0.5s"
 			 "\n2-sniper:	vitesse 15,	dégats 50,	temps de recharge 3s "
-			 "\n:")
+			 "\n- ")
 if arme=="1":
 	arme_damage = 5
 	arme_speed = 5
