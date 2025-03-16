@@ -138,6 +138,7 @@ class Bullet(Obj):
 		lines.append("Bullet pos=({}, {}) speed=({}, {}) damage={}".format(self.pos[0], self.pos[1], self.speed[0], self.speed[1], self.damage))
 
 screen = pygame.display.set_mode(size) # définir la taille de la fenêtre
+#screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 sock.listen(address) # commencer à écouter les messages du réseau
 
@@ -213,11 +214,10 @@ while True:
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			mouse_pos = pygame.mouse.get_pos()
 			angle = math.atan2(mouse_pos[1] - me.pos[1], mouse_pos[0] - me.pos[0])
-			print(angle)
 			# Créer une balle
 			bullet = Bullet( # avec ses informations :
 				new_oid(), # son identifiant
-				[me.pos[0] + math.cos(angle) * 8, me.pos[1] + math.sin(angle) * 8], # sa position
+				[me.pos[0] + math.cos(angle) * 10, me.pos[1] + math.sin(angle) * 10], # sa position
 				[math.cos(angle) * arme_speed, math.sin(angle) * arme_speed], # sa vitesse
 				[255, 255, 255], # couleur blanche
 				arme_damage
@@ -289,7 +289,7 @@ while True:
 	if me.speed[0] != 0 or me.speed[1] != 0:
 		send_move()
 
-	xlog.display(screen, lines) # afficher le texte d'information
+	#xlog.display(screen, lines) # afficher le texte d'information
 
 	pygame.display.flip() # mettre à jour l'écran
 	clock.tick(30) # attendre un peu
