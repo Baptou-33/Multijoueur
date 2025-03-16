@@ -184,8 +184,6 @@ send_move()
 
 # Boucle principale
 while True:
-	pos = pygame.mouse.get_pos()
-	angle = math.atan2(pos[0] - me.pos[0], pos[1] - me.pos[1])
 	# Lecture des événements
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: # fenêtre fermée
@@ -203,20 +201,7 @@ while True:
 				me.speed[1] = speed
 			elif event.key == pygame.K_UP:
 				me.speed[1] = -speed
-			elif event.key == pygame.K_SPACE:
-				# Créer une balle
-				bullet = Bullet( # avec ses informations :
-					new_oid(), # son identifiant
-					[me.pos[0] + math.cos(angle) * 8, me.pos[1] + math.sin(angle) * 8], # sa position
-					[math.cos(angle) * arme_speed, math.sin(angle) * arme_speed], # sa vitesse
-					[255, 255, 255], # couleur blanche
-					arme_damage
-				)
-				# Mettre le nouveau joueur dans les listes des joueurs et des objets
-				objects[bullet.oid] = bullet
-				# Dire à tout le monde qu'on a envoyé une balle
-				send_fire(bullet)
-		elif event.type == pygame.KEYUP: # touche relâchée
+		if event.type == pygame.KEYUP: # touche relâchée
 			if event.key == pygame.K_RIGHT:
 				me.speed[0] = 0
 			elif event.key == pygame.K_LEFT:
@@ -225,6 +210,22 @@ while True:
 				me.speed[1] = 0
 			elif event.key == pygame.K_UP:
 				me.speed[1] = 0
+		if event.type == pygame.MOUSEBUTTONDOWN:
+			mouse_pos = pygame.mouse.get_pos()
+			angle = math.atan2(mouse_pos[1] - me.pos[1], mouse_pos[0] - me.pos[0])
+			print(angle)
+			# Créer une balle
+			bullet = Bullet( # avec ses informations :
+				new_oid(), # son identifiant
+				[me.pos[0] + math.cos(angle) * 8, me.pos[1] + math.sin(angle) * 8], # sa position
+				[math.cos(angle) * arme_speed, math.sin(angle) * arme_speed], # sa vitesse
+				[255, 255, 255], # couleur blanche
+				arme_damage
+			)
+			# Mettre le nouveau joueur dans les listes des joueurs et des objets
+			objects[bullet.oid] = bullet
+			# Dire à tout le monde qu'on a envoyé une balle
+			send_fire(bullet)
 
 	# Lecture du réseau
 	for d, a in sock.get():
